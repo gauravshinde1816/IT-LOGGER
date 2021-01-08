@@ -1,20 +1,15 @@
 import React, { useState, useEffect } from "react";
 import TechItems from "./TechItems";
-
-const TechList = () => {
-  const [techs, setTechs] = useState([]);
-
+import PreLoader from "../layout/PreLoader";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { getTechs } from "../../actions/techActions";
+const TechList = ({ getTechs, tech: { techs, loading } }) => {
   useEffect(() => {
     getTechs();
+
+    console.log(techs);
   }, []);
-
-  const getTechs = async () => {
-    const res = await fetch("/techs");
-    const data = await res.json();
-
-    setTechs(data);
-    console.log(data);
-  };
 
   return (
     <div id="tech-list-modal" className="modal bottom-sheet">
@@ -24,11 +19,9 @@ const TechList = () => {
             <h4 className="center">Available technicians</h4>
           </li>
 
-          {techs.length === 0 ? (
-            <p className="center"> No Techs Available</p>
-          ) : (
-            techs.map((tech) => <TechItems tech={tech} key={tech.id} />)
-          )}
+          {!loading &&
+            techs !== null &&
+            techs.map((tech) => <TechItems tech={tech} key={tech.id} />)}
         </ul>
       </div>
       <div className="modal-footer">
@@ -40,4 +33,13 @@ const TechList = () => {
   );
 };
 
-export default TechList;
+TechList.propTypes = {
+  getTechs: PropTypes.func.isRequired,
+  tech: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  tech: state.tech,
+});
+
+export default connect(mapStateToProps, { getTechs })(TechList);

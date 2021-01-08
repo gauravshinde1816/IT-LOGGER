@@ -12,7 +12,7 @@ const Logs = ({ log: { logs, loading }, getLogs }) => {
   }, [getLogs]);
 
   if (loading || logs === null) {
-    <PreLoader />;
+    return <PreLoader />;
   }
 
   return (

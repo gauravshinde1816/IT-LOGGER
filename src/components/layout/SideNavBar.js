@@ -1,13 +1,25 @@
-import React from "react";
-
-const SideNavBar = () => {
+import React, { useRef } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { searchLogs } from "../../actions/logActions";
+const SideNavBar = ({ searchLogs }) => {
+  const text = useRef("");
+  const onChange = (e) => {
+    searchLogs(text.current.value);
+  };
   return (
     <div>
       <nav style={{ marginBottom: "20px", backgroundColor: "blue" }}>
         <div className="nav-wrapper">
           <form>
             <div className="input-field">
-              <input id="search" type="search" />
+              <input
+                id="search"
+                type="search"
+                placeholder="search Logs ...."
+                onChange={onChange}
+                ref={text}
+              />
               <label className="label-icon" htmlFor="search">
                 <i className="material-icons">search</i>
               </label>
@@ -20,4 +32,8 @@ const SideNavBar = () => {
   );
 };
 
-export default SideNavBar;
+SideNavBar.propsTypes = {
+  searchLogs: PropTypes.func.isRequired,
+};
+
+export default connect(null, { searchLogs })(SideNavBar);

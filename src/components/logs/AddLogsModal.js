@@ -1,6 +1,12 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
+
+import { addLogs } from "../../actions/logActions";
+import PropTypes from "prop-types";
+
 import M from "materialize-css/dist/js/materialize.min.js";
-const AddLogsModal = () => {
+import TechSelectOptions from "../techs/TechSelectOptions";
+const AddLogsModal = ({ addLogs }) => {
   const [message, setMessage] = useState("");
   const [attention, setAttention] = useState(false);
   const [tech, setTechs] = useState("");
@@ -11,7 +17,21 @@ const AddLogsModal = () => {
         html: "Plesae enter the techs and message",
       });
     } else {
-      console.log(message, tech, attention);
+      // console.log(message, tech, attention);
+      const newLog = {
+        message,
+        attention,
+        tech,
+        date: new Date(),
+      };
+
+      addLogs(newLog);
+      M.toast({ html: `Logs added by ${tech}` });
+
+      //clear fields
+      setAttention(false);
+      setMessage("");
+      setTechs("");
     }
   };
   return (
@@ -43,9 +63,7 @@ const AddLogsModal = () => {
               <option value="" disabled>
                 Select technician
               </option>
-              <option value="Ak madan">Akshit madan</option>
-              <option value="Asif A">Asif Ansari</option>
-              <option value="gaurav S">Gaurav Shinde</option>
+              <TechSelectOptions />
             </select>
           </div>
         </div>
@@ -77,10 +95,13 @@ const AddLogsModal = () => {
     </div>
   );
 };
+AddLogsModal.propTypes = {
+  addLogs: PropTypes.func.isRequired,
+};
 
 const modelStyle = {
   height: "75%",
   width: "75%",
   marginTop: "15px",
 };
-export default AddLogsModal;
+export default connect(null, { addLogs })(AddLogsModal);
