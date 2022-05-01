@@ -1,6 +1,6 @@
 # IT logger Application
 
-<p> IT logger is an apllication which basicaaly helps to keep track of all important operations and task in the company. You can add , delete and update the task. Also you can assign specific technician to complete that task. </p>
+<p> IT logger is an application which basically helps to keep track of all important operations and task in the company. You can add , delete and update the task. Also you can assign specific technician to complete that task. </p>
 
 ## Tech Stack used :
 
